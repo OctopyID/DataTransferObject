@@ -2,9 +2,9 @@
 
 namespace {{ namespace }};
 
-use Octopy\DTO\DTO;
+use Octopy\DTO\DataTransferObject;
 
-class {{ class }} extends DTO
+class {{ class }} extends DataTransferObject
 {
     //
 }
