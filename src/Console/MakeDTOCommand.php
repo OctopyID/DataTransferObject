@@ -107,7 +107,7 @@ class MakeDTOCommand extends GeneratorCommand
 
             $columns = collect(Schema::getColumnListing($table));
             if (! empty($model->getFillable())) {
-                $columns = $columns->intersect($model->getFillable());
+                $columns = $model->getFillable();
             }
 
             $columns = collect($columns)->flatMap(function (string $column) use ($table) : array {
