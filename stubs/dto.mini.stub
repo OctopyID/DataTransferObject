@@ -1,0 +1,10 @@
+<?php
+
+namespace {{ namespace }};
+
+use Octopy\DTO\DTO;
+
+class {{ class }} extends DTO
+{
+    //
+}

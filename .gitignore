@@ -1,0 +1,7 @@
+# IDE
+.idea
+
+# PROJECT
+vendor
+composer.lock
+*.cache

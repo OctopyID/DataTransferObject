@@ -1,0 +1,45 @@
+{
+    "name": "octopyid/data-transfer-object",
+    "description": "Simple Laravel Data Transfer Object",
+    "keywords": [
+        "Laravel",
+        "Data Transfer Object"
+    ],
+    "type": "library",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "SupianIDz",
+            "email": "supianidz@gmail.com"
+        }
+    ],
+    "require": {
+        "php": "^8.0|^8.1"
+    },
+    "require-dev": {
+        "nunomaduro/collision": "^6.2",
+        "orchestra/testbench": "^7.4"
+    },
+    "autoload": {
+        "psr-4": {
+            "Octopy\\DTO\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Octopy\\DTO\\Tests\\": "tests/"
+        }
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Octopy\\DTO\\DTOServiceProvider"
+            ]
+        }
+    },
+    "config": {
+        "sort-packages": true
+    },
+    "minimum-stability": "dev",
+    "prefer-stable": true
+}

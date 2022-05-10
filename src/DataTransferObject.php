@@ -1,0 +1,108 @@
+<?php
+
+namespace Octopy\DTO;
+
+use Illuminate\Contracts\Support\Arrayable;
+use Illuminate\Contracts\Support\Jsonable;
+use Illuminate\Support\Arr;
+use InvalidArgumentException;
+use JsonException;
+use JsonSerializable;
+use Traversable;
+
+class DataTransferObject implements Arrayable, Jsonable
+{
+    /**
+     * @var array
+     */
+    protected array $transformed = [];
+
+    /**
+     * @param  mixed $original
+     */
+    public function __construct(protected mixed $original = [])
+    {
+        $this->transformed = $this->transform($this->original);
+    }
+
+    /**
+     * @param  mixed $data
+     * @return static
+     */
+    public static function make(mixed $data) : self
+    {
+        return new static($data);
+    }
+
+    /**
+     * @param  string $key
+     * @param  mixed  $default
+     * @return mixed
+     */
+    public function get(string $key, mixed $default = null) : mixed
+    {
+        return Arr::get($this->transformed, $key, $default);
+    }
+
+    /**
+     * @param  string $key
+     * @param  mixed  $value
+     * @return static
+     */
+    public function set(string $key, mixed $value) : static
+    {
+        Arr::set($this->transformed, $key, $value);
+
+        return $this;
+    }
+
+    /**
+     * @return array
+     */
+    public function toArray() : array
+    {
+        return $this->transformed;
+    }
+
+    /**
+     * @param  int $options
+     * @return bool|string
+     */
+    public function toJson($options = 0) : bool|string
+    {
+        return json_encode($this->transformed, $options);
+    }
+
+    /**
+     * @param  mixed $original
+     * @return array
+     */
+    private function transform(mixed $original) : array
+    {
+        if ($original instanceof Arrayable) {
+            return $original->toArray();
+        }
+
+        if ($original instanceof Jsonable) {
+            return json_decode($original->toJson(), true);
+        }
+
+        if ($original instanceof JsonSerializable) {
+            return $original->jsonSerialize();
+        }
+
+        if ($original instanceof Traversable) {
+            return iterator_to_array($original);
+        }
+
+        if (is_string($original)) {
+            try {
+                $original = json_decode($original, true);
+            } catch (JsonException) {
+                throw new InvalidArgumentException('Invalid JSON string');
+            }
+        }
+
+        return $original;
+    }
+}
