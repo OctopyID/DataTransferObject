@@ -47,6 +47,15 @@ class DataTransferObject implements Arrayable, Jsonable
 
     /**
      * @param  string $key
+     * @return bool
+     */
+    public function has(string $key) : bool
+    {
+        return Arr::has($this->transformed, $key);
+    }
+
+    /**
+     * @param  string $key
      * @param  mixed  $value
      * @return static
      */
