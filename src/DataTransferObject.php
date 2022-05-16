@@ -55,12 +55,20 @@ class DataTransferObject implements Arrayable, Jsonable
     }
 
     /**
-     * @param  string $key
-     * @param  mixed  $value
+     * @param  string|array $key
+     * @param  mixed        $value
      * @return static
      */
-    public function set(string $key, mixed $value) : static
+    public function set(string|array $key, mixed $value) : static
     {
+        if (is_array($key)) {
+            foreach ($key as $name => $value) {
+                $this->set($name, $value);
+            }
+
+            return $this;
+        };
+
         Arr::set($this->transformed, $key, $value);
 
         return $this;
