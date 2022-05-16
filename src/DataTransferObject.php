@@ -4,6 +4,7 @@ namespace Octopy\DTO;
 
 use Illuminate\Contracts\Support\Arrayable;
 use Illuminate\Contracts\Support\Jsonable;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Arr;
 use InvalidArgumentException;
 use JsonException;
@@ -61,6 +62,13 @@ class DataTransferObject implements Arrayable, Jsonable
      */
     public function toArray() : array
     {
+        if ($this->original instanceof Model) {
+            return collect($this->transformed)->filter(function ($value, $key) {
+                return ! in_array($key, $this->original->getHidden());
+            })
+                ->toArray();
+        }
+
         return $this->transformed;
     }
 
@@ -70,7 +78,7 @@ class DataTransferObject implements Arrayable, Jsonable
      */
     public function toJson($options = 0) : bool|string
     {
-        return json_encode($this->transformed, $options);
+        return json_encode($this->toArray(), $options);
     }
 
     /**
